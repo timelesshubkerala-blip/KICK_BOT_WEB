@@ -4,158 +4,122 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>KICK Bot — Premium Discord Bot</title>
-<meta name="description" content="KICK Bot — Anti-Nuke, AI Chat, Music, Leveling, Tickets and 100+ commands for your Discord server.">
+<meta name="description" content="KICK Bot — Anti-Nuke, AI Chat, Music, Leveling, Tickets and 100+ commands.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="config/config.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d24;
-  --accent:#7289da;--pink:#ff6b9d;--green:#2ed573;--red:#ff4757;
-  --text:#e8eaf0;--muted:#6b7280;
-  --border:rgba(255,255,255,0.07);
-  --glow:rgba(114,137,218,0.15);
-  --card:rgba(255,255,255,0.04);
-  --radius:16px;
-}
+:root{--bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d24;--accent:#7289da;--pink:#ff6b9d;--green:#2ed573;--red:#ff4757;--text:#e8eaf0;--muted:#6b7280;--border:rgba(255,255,255,0.07);--card:rgba(255,255,255,0.04);--radius:16px}
 html{scroll-behavior:smooth}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
 a{text-decoration:none;color:inherit}
-
-/* Loading */
 #loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s,visibility .5s}
 #loader.hide{opacity:0;visibility:hidden}
-#loader img{width:80px;height:80px;border-radius:50%;border:3px solid var(--accent);animation:spin-slow 3s linear infinite}
+#loader img{width:80px;height:80px;border-radius:50%;border:3px solid var(--accent);animation:spin 3s linear infinite}
 #loader p{margin-top:16px;font-weight:700;font-size:1.3rem;background:linear-gradient(90deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-@keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-
-/* Navbar */
-nav{position:sticky;top:16px;width:92%;max-width:1200px;margin:0 auto;background:rgba(17,19,24,0.8);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:50px;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+@keyframes spin{to{transform:rotate(360deg)}}
+nav{position:sticky;top:16px;width:92%;max-width:1200px;margin:0 auto;background:rgba(17,19,24,.8);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:50px;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;z-index:100}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.2rem}
 .logo img{width:38px;height:38px;border-radius:50%;border:2px solid var(--accent)}
-.status-dot{width:9px;height:9px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .4s}
-.status-dot.online{background:var(--green);box-shadow:0 0 0 3px rgba(46,213,115,.25);animation:pulse 2s infinite}
-.status-dot.offline{background:var(--red);box-shadow:0 0 0 3px rgba(255,71,87,.2)}
+.sdot{width:9px;height:9px;border-radius:50%;background:var(--muted);transition:background .4s;flex-shrink:0}
+.sdot.on{background:var(--green);box-shadow:0 0 0 3px rgba(46,213,115,.25);animation:pulse 2s infinite}
+.sdot.off{background:var(--red)}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(46,213,115,.5)}70%{box-shadow:0 0 0 7px rgba(46,213,115,0)}}
 .nav-links{display:flex;gap:28px;font-size:.9rem;font-weight:500;color:var(--muted)}
 .nav-links a:hover{color:var(--text)}
 .nav-actions{display:flex;gap:10px;align-items:center}
 .btn{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:50px;font-weight:700;font-size:.88rem;border:none;cursor:pointer;transition:all .25s}
-.btn-primary{background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;box-shadow:0 4px 20px rgba(114,137,218,.35)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(114,137,218,.5)}
-.btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
-.btn-ghost:hover{background:rgba(255,255,255,.08)}
+.btn-p{background:linear-gradient(135deg,var(--accent),#9b59b6);color:#fff;box-shadow:0 4px 20px rgba(114,137,218,.35)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(114,137,218,.5)}
+.btn-g{background:var(--card);color:var(--text);border:1px solid var(--border)}
+.btn-g:hover{background:rgba(255,255,255,.08)}
 .btn-sm{padding:8px 16px;font-size:.82rem}
 @media(max-width:768px){.nav-links{display:none}.logo span{display:none}}
-
-/* Stats Bar */
-.stats-bar{width:92%;max-width:1200px;margin:14px auto 0;background:rgba(17,19,24,.7);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:50px;padding:9px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem}
-.live-badge{background:var(--red);color:#fff;font-size:.6rem;font-weight:800;padding:2px 8px;border-radius:50px;text-transform:uppercase;letter-spacing:.08em;animation:blink 1.5s infinite}
+.sbar{width:92%;max-width:1200px;margin:14px auto 0;background:rgba(17,19,24,.7);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:50px;padding:9px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem}
+.live{background:var(--red);color:#fff;font-size:.6rem;font-weight:800;padding:2px 8px;border-radius:50px;text-transform:uppercase;letter-spacing:.08em;animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
-.stat-pill{display:flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:50px}
-.stat-pill i{color:var(--accent);font-size:.8rem}
-.stat-pill .val{font-weight:700;color:var(--text)}
-.stat-pill .lbl{color:var(--muted)}
-.stat-spacer{flex:1}
-#stat-updated{color:var(--muted);font-size:.75rem}
-#stats-status-text.online{color:var(--green);font-weight:700}
-#stats-status-text.offline{color:var(--red);font-weight:700}
-
-/* Hero */
+.pill{display:flex;align-items:center;gap:6px;padding:4px 12px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:50px}
+.pill i{color:var(--accent);font-size:.8rem}
+.pill .v{font-weight:700}
+.pill .l{color:var(--muted)}
+.sp{flex:1}
+#upd{color:var(--muted);font-size:.75rem}
+#sst.on{color:var(--green);font-weight:700}
+#sst.off{color:var(--red);font-weight:700}
 .hero{max-width:1200px;margin:70px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;min-height:70vh}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(114,137,218,.12);border:1px solid rgba(114,137,218,.25);border-radius:50px;padding:6px 16px;font-size:.8rem;font-weight:600;color:var(--accent);margin-bottom:20px}
+.htag{display:inline-flex;align-items:center;gap:8px;background:rgba(114,137,218,.12);border:1px solid rgba(114,137,218,.25);border-radius:50px;padding:6px 16px;font-size:.8rem;font-weight:600;color:var(--accent);margin-bottom:20px}
 .hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.1;margin-bottom:18px}
-.hero h1 .grad{background:linear-gradient(135deg,var(--accent) 0%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.grad{background:linear-gradient(135deg,var(--accent) 0%,var(--pink) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .hero p{color:var(--muted);font-size:1.05rem;margin-bottom:32px;max-width:480px}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-.hero-stats{display:flex;gap:24px;margin-top:36px}
-.hero-stat{text-align:center}
-.hero-stat .num{font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-stat .lbl{font-size:.78rem;color:var(--muted);font-weight:500}
-.hero-visual{display:flex;justify-content:center;align-items:center;position:relative}
-.bot-card{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:28px;width:100%;max-width:340px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
-.bot-card-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
-.bot-card-top img{width:56px;height:56px;border-radius:50%;border:2px solid var(--accent)}
-.bot-card-top .name{font-weight:800;font-size:1.1rem}
-.bot-card-top .tag{color:var(--muted);font-size:.82rem}
-.bot-card-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(46,213,115,.12);border:1px solid rgba(46,213,115,.25);border-radius:50px;padding:3px 10px;font-size:.75rem;font-weight:600;color:var(--green);margin-bottom:16px}
-.bot-card-features{display:flex;flex-wrap:wrap;gap:7px}
-.feat-tag{background:rgba(114,137,218,.1);border:1px solid rgba(114,137,218,.2);border-radius:8px;padding:4px 10px;font-size:.75rem;color:var(--accent);font-weight:500}
-.glow-ring{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(114,137,218,.12) 0%,transparent 70%);pointer-events:none;z-index:-1}
-@media(max-width:900px){.hero{grid-template-columns:1fr;text-align:center}.hero p{margin:0 auto 32px}.hero-btns{justify-content:center}.hero-stats{justify-content:center}.hero-visual{margin-top:32px}}
-
-/* Section */
+.hbtns{display:flex;gap:12px;flex-wrap:wrap}
+.hstats{display:flex;gap:24px;margin-top:36px}
+.hs .n{font-size:1.6rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hs .l{font-size:.78rem;color:var(--muted);font-weight:500}
+.hvis{display:flex;justify-content:center;align-items:center;position:relative}
+.bcard{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:28px;width:100%;max-width:340px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.bcard-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.bcard-top img{width:56px;height:56px;border-radius:50%;border:2px solid var(--accent)}
+.bcard-top .nm{font-weight:800;font-size:1.1rem}
+.bcard-top .tg{color:var(--muted);font-size:.82rem}
+.bbadge{display:inline-flex;align-items:center;gap:6px;background:rgba(46,213,115,.12);border:1px solid rgba(46,213,115,.25);border-radius:50px;padding:3px 10px;font-size:.75rem;font-weight:600;color:var(--green);margin-bottom:16px}
+.bfeats{display:flex;flex-wrap:wrap;gap:7px}
+.ft{background:rgba(114,137,218,.1);border:1px solid rgba(114,137,218,.2);border-radius:8px;padding:4px 10px;font-size:.75rem;color:var(--accent);font-weight:500}
+.glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(114,137,218,.12) 0%,transparent 70%);pointer-events:none;z-index:-1}
+@media(max-width:900px){.hero{grid-template-columns:1fr;text-align:center}.hero p{margin:0 auto 32px}.hbtns{justify-content:center}.hstats{justify-content:center}.hvis{margin-top:32px}}
 section{padding:80px 24px;max-width:1200px;margin:0 auto}
-.section-head{text-align:center;margin-bottom:52px}
-.section-head h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:10px}
-.section-head h2 .grad{background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.section-head p{color:var(--muted);font-size:1rem}
-
-/* Features */
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-.feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .3s;position:relative;overflow:hidden}
-.feature-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--glow),transparent);opacity:0;transition:.3s}
-.feature-card:hover{border-color:rgba(114,137,218,.35);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
-.feature-card:hover::before{opacity:1}
-.feat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px}
-.feat-icon.blue{background:rgba(114,137,218,.15);color:var(--accent)}
-.feat-icon.pink{background:rgba(255,107,157,.15);color:var(--pink)}
-.feat-icon.green{background:rgba(46,213,115,.15);color:var(--green)}
-.feat-icon.purple{background:rgba(155,89,182,.15);color:#9b59b6}
-.feat-icon.orange{background:rgba(255,165,0,.15);color:#ffa500}
-.feat-icon.cyan{background:rgba(0,206,209,.15);color:#00ced1}
-.feature-card h3{font-size:1rem;font-weight:700;margin-bottom:8px}
-.feature-card p{color:var(--muted);font-size:.86rem;line-height:1.5}
-
-/* Commands */
+.sh{text-align:center;margin-bottom:52px}
+.sh h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:10px}
+.sh p{color:var(--muted);font-size:1rem}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.fc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .3s;position:relative;overflow:hidden}
+.fc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(114,137,218,.15),transparent);opacity:0;transition:.3s}
+.fc:hover{border-color:rgba(114,137,218,.35);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.fc:hover::before{opacity:1}
+.fi{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px}
+.fi.b{background:rgba(114,137,218,.15);color:var(--accent)}
+.fi.pk{background:rgba(255,107,157,.15);color:var(--pink)}
+.fi.g{background:rgba(46,213,115,.15);color:var(--green)}
+.fi.pu{background:rgba(155,89,182,.15);color:#9b59b6}
+.fi.o{background:rgba(255,165,0,.15);color:#ffa500}
+.fi.c{background:rgba(0,206,209,.15);color:#00ced1}
+.fc h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.fc p{color:var(--muted);font-size:.86rem;line-height:1.5}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:32px}
-.tab-btn{padding:8px 20px;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .25s}
-.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.tab-content{display:none}
-.tab-content.active{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
-.cmd-chip{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.cmd-chip:hover{border-color:var(--accent);background:rgba(114,137,218,.1);color:var(--accent)}
-.cmd-chip i{opacity:0;font-size:.7rem;transition:.2s}
-.cmd-chip:hover i{opacity:1}
-
-/* Stats Section */
-.stats-section{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:48px;text-align:center}
-.live-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;margin-top:36px}
-.live-stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px}
-.live-stat-card .big-num{font-size:2.4rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.live-stat-card .big-lbl{color:var(--muted);font-size:.85rem;font-weight:500;margin-top:6px}
-.live-stat-card i{font-size:1.8rem;margin-bottom:12px;opacity:.7}
-
-/* Footer */
+.tb{padding:8px 20px;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .25s}
+.tb.act{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tc{display:none}
+.tc.act{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cc:hover{border-color:var(--accent);background:rgba(114,137,218,.1);color:var(--accent)}
+.cc i{opacity:0;font-size:.7rem;transition:.2s}
+.cc:hover i{opacity:1}
+.ls{background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:48px;text-align:center}
+.lg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;margin-top:36px}
+.lc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 20px}
+.lc .bn{font-size:2.4rem;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.lc .bl{color:var(--muted);font-size:.85rem;font-weight:500;margin-top:6px}
+.lc i{font-size:1.8rem;margin-bottom:12px;opacity:.7}
 footer{border-top:1px solid var(--border);padding:40px 24px;max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
-.footer-logo{display:flex;align-items:center;gap:10px;font-weight:800}
-.footer-logo img{width:32px;height:32px;border-radius:50%}
-.footer-links{display:flex;gap:20px;flex-wrap:wrap}
-.footer-links a{color:var(--muted);font-size:.88rem;transition:color .2s}
-.footer-links a:hover{color:var(--text)}
-.footer-copy{color:var(--muted);font-size:.82rem}
-
-/* Toast */
+.fl{display:flex;align-items:center;gap:10px;font-weight:800}
+.fl img{width:32px;height:32px;border-radius:50%}
+.flinks{display:flex;gap:20px;flex-wrap:wrap}
+.flinks a{color:var(--muted);font-size:.88rem;transition:color .2s}
+.flinks a:hover{color:var(--text)}
+.fc2{color:var(--muted);font-size:.82rem}
 .toast{position:fixed;bottom:28px;right:28px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 20px;display:flex;align-items:center;gap:10px;font-size:.88rem;font-weight:600;opacity:0;transform:translateY(12px);transition:all .3s;pointer-events:none;z-index:9999}
 .toast.show{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
+<div id="loader"><img src="assets/images/kick-logo.gif" alt="KICK"><p>KICK Bot</p></div>
 
-<!-- Loader -->
-<div id="loader">
-  <img src="assets/images/kick-logo.gif" alt="KICK">
-  <p>KICK Bot</p>
-</div>
-
-<!-- Navbar -->
 <nav>
   <div class="logo">
     <img src="assets/images/kick-logo.gif" alt="KICK">
     <span>KICK</span>
-    <span id="nav-dot" class="status-dot" title="Bot status"></span>
+    <span id="ndot" class="sdot"></span>
   </div>
   <div class="nav-links">
     <a href="#features">Features</a>
@@ -163,324 +127,160 @@ footer{border-top:1px solid var(--border);padding:40px 24px;max-width:1200px;mar
     <a href="#live-stats">Stats</a>
   </div>
   <div class="nav-actions">
-    <a href="#" id="gh-btn" target="_blank" class="btn btn-ghost btn-sm"><i class="fab fa-github"></i></a>
-    <a href="#" id="invite-btn" class="btn btn-primary btn-sm"><i class="fab fa-discord"></i> Invite</a>
+    <a href="#" id="gh-btn" target="_blank" class="btn btn-g btn-sm"><i class="fab fa-github"></i></a>
+    <a href="#" id="inv-btn" class="btn btn-p btn-sm"><i class="fab fa-discord"></i> Invite</a>
   </div>
 </nav>
 
-<!-- Stats Bar -->
-<div class="stats-bar">
-  <span class="live-badge">LIVE</span>
-  <div class="stat-pill">
-    <span class="status-dot" id="bar-dot"></span>
-    <span id="stats-status-text">Connecting…</span>
-  </div>
-  <div class="stat-pill" id="pill-ping">
-    <i class="fas fa-bolt"></i>
-    <span class="val" id="stats-ping">—</span>
-    <span class="lbl">ms</span>
-  </div>
-  <div class="stat-pill" id="pill-guilds" style="display:none">
-    <i class="fas fa-server"></i>
-    <span class="val" id="stats-guilds">—</span>
-    <span class="lbl">servers</span>
-  </div>
-  <div class="stat-pill" id="pill-users" style="display:none">
-    <i class="fas fa-users"></i>
-    <span class="val" id="stats-users">—</span>
-    <span class="lbl">users</span>
-  </div>
-  <div class="stat-spacer"></div>
-  <span id="stat-updated"></span>
+<div class="sbar">
+  <span class="live">LIVE</span>
+  <div class="pill"><span class="sdot" id="bdot"></span><span id="sst">Connecting…</span></div>
+  <div class="pill"><i class="fas fa-bolt"></i><span class="v" id="sping">—</span><span class="l">ms</span></div>
+  <div class="pill" id="pg" style="display:none"><i class="fas fa-server"></i><span class="v" id="sguilds">—</span><span class="l">servers</span></div>
+  <div class="pill" id="pu" style="display:none"><i class="fas fa-users"></i><span class="v" id="susers">—</span><span class="l">users</span></div>
+  <div class="sp"></div>
+  <span id="upd"></span>
 </div>
 
-<!-- Hero -->
 <section class="hero">
-  <div class="hero-content">
-    <div class="hero-tag"><i class="fas fa-bolt"></i> Premium Discord Bot</div>
+  <div>
+    <div class="htag"><i class="fas fa-bolt"></i> Premium Discord Bot</div>
     <h1>The Ultimate<br><span class="grad">Discord Companion</span></h1>
     <p>Anti-Nuke protection, AI chat, music, leveling, tickets and 100+ powerful commands — all in one bot.</p>
-    <div class="hero-btns">
-      <a href="#" id="hero-invite" class="btn btn-primary"><i class="fab fa-discord"></i> Add to Server</a>
-      <a href="#" id="hero-support" class="btn btn-ghost"><i class="fas fa-headset"></i> Support Server</a>
+    <div class="hbtns">
+      <a href="#" id="h-inv" class="btn btn-p"><i class="fab fa-discord"></i> Add to Server</a>
+      <a href="#" id="h-sup" class="btn btn-g"><i class="fas fa-headset"></i> Support</a>
     </div>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="num" id="h-guilds">—</div><div class="lbl">Servers</div></div>
-      <div class="hero-stat"><div class="num" id="h-users">—</div><div class="lbl">Users</div></div>
-      <div class="hero-stat"><div class="num">100+</div><div class="lbl">Commands</div></div>
-      <div class="hero-stat"><div class="num">24/7</div><div class="lbl">Uptime</div></div>
+    <div class="hstats">
+      <div class="hs"><div class="n" id="h-g">—</div><div class="l">Servers</div></div>
+      <div class="hs"><div class="n" id="h-u">—</div><div class="l">Users</div></div>
+      <div class="hs"><div class="n">100+</div><div class="l">Commands</div></div>
+      <div class="hs"><div class="n">24/7</div><div class="l">Uptime</div></div>
     </div>
   </div>
-  <div class="hero-visual">
-    <div class="glow-ring"></div>
-    <div class="bot-card">
-      <div class="bot-card-top">
+  <div class="hvis">
+    <div class="glow"></div>
+    <div class="bcard">
+      <div class="bcard-top">
         <img src="assets/images/kick-logo.gif" alt="KICK">
-        <div>
-          <div class="name">KICK Bot</div>
-          <div class="tag">Discord Bot • Always Online</div>
-        </div>
+        <div><div class="nm">KICK Bot</div><div class="tg">Discord Bot • Always Online</div></div>
       </div>
-      <div class="bot-card-badge"><span class="status-dot online" style="width:7px;height:7px"></span> Online &amp; Ready</div>
-      <div class="bot-card-features">
-        <span class="feat-tag">🛡️ Anti-Nuke</span>
-        <span class="feat-tag">🤖 AI Chat</span>
-        <span class="feat-tag">🎵 Music</span>
-        <span class="feat-tag">🎫 Tickets</span>
-        <span class="feat-tag">⭐ Leveling</span>
-        <span class="feat-tag">🎁 Giveaway</span>
-        <span class="feat-tag">🔨 Moderation</span>
-        <span class="feat-tag">🎮 Games</span>
+      <div class="bbadge"><span class="sdot on" style="width:7px;height:7px"></span> Online &amp; Ready</div>
+      <div class="bfeats">
+        <span class="ft">🛡️ Anti-Nuke</span><span class="ft">🤖 AI Chat</span><span class="ft">🎵 Music</span>
+        <span class="ft">🎫 Tickets</span><span class="ft">⭐ Leveling</span><span class="ft">🎁 Giveaway</span>
+        <span class="ft">🔨 Moderation</span><span class="ft">🎮 Games</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Features -->
 <section id="features">
-  <div class="section-head">
-    <h2>Powerful <span class="grad">Features</span></h2>
-    <p>Everything your server needs, built into one powerful bot.</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feat-icon blue"><i class="fas fa-shield-halved"></i></div>
-      <h3>Anti-Nuke Protection</h3>
-      <p>Full server protection — anti-ban, anti-kick, anti-channel delete, anti-role abuse, anti-webhook, and more.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon green"><i class="fas fa-gavel"></i></div>
-      <h3>Auto Moderation</h3>
-      <p>Anti-spam, anti-links, anti-caps, anti-mass-mention, anti-invites — keep your server clean automatically.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon purple"><i class="fas fa-robot"></i></div>
-      <h3>AI Chat</h3>
-      <p>Multi-model AI powered by Groq &amp; Gemini. Chat, ask questions, analyze images, generate code, and roleplay.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon pink"><i class="fas fa-music"></i></div>
-      <h3>Music Player</h3>
-      <p>High-quality music with queue management, autoplay, NowPlaying cards, and multi-server support.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon orange"><i class="fas fa-chart-line"></i></div>
-      <h3>Leveling System</h3>
-      <p>XP-based leveling with leaderboards, level roles, rank cards, and fully customizable settings.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon cyan"><i class="fas fa-ticket"></i></div>
-      <h3>Ticket System</h3>
-      <p>Professional support tickets with custom categories, staff roles, transcript logs, and close management.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon blue"><i class="fas fa-gift"></i></div>
-      <h3>Giveaways</h3>
-      <p>Host giveaways with role requirements, multiple winners, timer, and reroll functionality.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon green"><i class="fas fa-door-open"></i></div>
-      <h3>Welcome &amp; Goodbye</h3>
-      <p>Custom welcome and farewell messages with embedded cards, images, and join-DM support.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon purple"><i class="fas fa-star"></i></div>
-      <h3>Reaction Roles</h3>
-      <p>Let members self-assign roles by reacting to messages. Supports multiple role menus.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon pink"><i class="fas fa-gamepad"></i></div>
-      <h3>Mini Games</h3>
-      <p>Chess, Battleship, ConnectFour, Blackjack, 2048, Slots — keep your community entertained.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon orange"><i class="fas fa-microphone"></i></div>
-      <h3>Voice Channels</h3>
-      <p>Join-to-Create private VCs, voice channel management, bitrate control, and more.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feat-icon cyan"><i class="fas fa-moon"></i></div>
-      <h3>Night Mode</h3>
-      <p>Schedule automatic server lockdowns during off-hours and unlock them in the morning.</p>
-    </div>
+  <div class="sh"><h2>Powerful <span class="grad">Features</span></h2><p>Everything your server needs, built into one powerful bot.</p></div>
+  <div class="fg">
+    <div class="fc"><div class="fi b"><i class="fas fa-shield-halved"></i></div><h3>Anti-Nuke</h3><p>Full protection — anti-ban, anti-kick, anti-channel delete, anti-role abuse, anti-webhook, and more.</p></div>
+    <div class="fc"><div class="fi g"><i class="fas fa-gavel"></i></div><h3>Auto Moderation</h3><p>Anti-spam, anti-links, anti-caps, anti-mass-mention, anti-invites — keeps your server clean automatically.</p></div>
+    <div class="fc"><div class="fi pu"><i class="fas fa-robot"></i></div><h3>AI Chat</h3><p>Multi-model AI via Groq &amp; Gemini. Chat, ask questions, analyze images, generate code, and roleplay.</p></div>
+    <div class="fc"><div class="fi pk"><i class="fas fa-music"></i></div><h3>Music Player</h3><p>High-quality music with queue management, autoplay, NowPlaying cards, and multi-server support.</p></div>
+    <div class="fc"><div class="fi o"><i class="fas fa-chart-line"></i></div><h3>Leveling System</h3><p>XP-based leveling with leaderboards, level roles, rank cards, and customizable settings.</p></div>
+    <div class="fc"><div class="fi c"><i class="fas fa-ticket"></i></div><h3>Ticket System</h3><p>Professional support tickets with categories, staff roles, transcript logs, and close management.</p></div>
+    <div class="fc"><div class="fi b"><i class="fas fa-gift"></i></div><h3>Giveaways</h3><p>Host giveaways with role requirements, multiple winners, timer, and reroll functionality.</p></div>
+    <div class="fc"><div class="fi g"><i class="fas fa-door-open"></i></div><h3>Welcome &amp; Goodbye</h3><p>Custom welcome and farewell messages with embedded cards, images, and join-DM support.</p></div>
+    <div class="fc"><div class="fi pu"><i class="fas fa-star"></i></div><h3>Reaction Roles</h3><p>Let members self-assign roles by reacting to messages. Supports multiple role menus.</p></div>
+    <div class="fc"><div class="fi pk"><i class="fas fa-gamepad"></i></div><h3>Mini Games</h3><p>Chess, Battleship, ConnectFour, Blackjack, 2048, Slots — keep your community entertained.</p></div>
+    <div class="fc"><div class="fi o"><i class="fas fa-microphone"></i></div><h3>Voice Channels</h3><p>Join-to-Create private VCs, voice channel management, and bitrate control.</p></div>
+    <div class="fc"><div class="fi c"><i class="fas fa-moon"></i></div><h3>Night Mode</h3><p>Schedule automatic server lockdowns during off-hours and unlock them in the morning.</p></div>
   </div>
 </section>
 
-<!-- Commands -->
 <section id="commands" style="padding-top:0">
-  <div class="section-head">
-    <h2>All <span class="grad">Commands</span></h2>
-    <p>Click any command to copy it to your clipboard.</p>
-  </div>
+  <div class="sh"><h2>All <span class="grad">Commands</span></h2><p>Click any command to copy it.</p></div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('fun',this)">🎮 Fun</button>
-    <button class="tab-btn" onclick="switchTab('mod',this)">🔨 Moderation</button>
-    <button class="tab-btn" onclick="switchTab('antinuke',this)">🛡️ Anti-Nuke</button>
-    <button class="tab-btn" onclick="switchTab('ai',this)">🤖 AI</button>
-    <button class="tab-btn" onclick="switchTab('music',this)">🎵 Music</button>
-    <button class="tab-btn" onclick="switchTab('utility',this)">⚙️ Utility</button>
-    <button class="tab-btn" onclick="switchTab('setup',this)">🔧 Setup</button>
+    <button class="tb act" onclick="sw('fun',this)">🎮 Fun</button>
+    <button class="tb" onclick="sw('mod',this)">🔨 Moderation</button>
+    <button class="tb" onclick="sw('an',this)">🛡️ Anti-Nuke</button>
+    <button class="tb" onclick="sw('ai',this)">🤖 AI</button>
+    <button class="tb" onclick="sw('mu',this)">🎵 Music</button>
+    <button class="tb" onclick="sw('ut',this)">⚙️ Utility</button>
+    <button class="tb" onclick="sw('se',this)">🔧 Setup</button>
   </div>
-  <div id="tab-fun" class="tab-content active"></div>
-  <div id="tab-mod" class="tab-content"></div>
-  <div id="tab-antinuke" class="tab-content"></div>
-  <div id="tab-ai" class="tab-content"></div>
-  <div id="tab-music" class="tab-content"></div>
-  <div id="tab-utility" class="tab-content"></div>
-  <div id="tab-setup" class="tab-content"></div>
+  <div id="tc-fun" class="tc act"></div>
+  <div id="tc-mod" class="tc"></div>
+  <div id="tc-an" class="tc"></div>
+  <div id="tc-ai" class="tc"></div>
+  <div id="tc-mu" class="tc"></div>
+  <div id="tc-ut" class="tc"></div>
+  <div id="tc-se" class="tc"></div>
 </section>
 
-<!-- Live Stats -->
 <section id="live-stats" style="padding-top:0">
-  <div class="stats-section">
-    <div class="section-head" style="margin-bottom:0">
-      <h2>Live <span class="grad">Stats</span></h2>
-      <p>Real-time data pulled directly from the Discord API.</p>
-    </div>
-    <div class="live-stats-grid">
-      <div class="live-stat-card">
-        <i class="fas fa-server" style="color:var(--accent)"></i>
-        <div class="big-num" id="ls-guilds">—</div>
-        <div class="big-lbl">Servers</div>
-      </div>
-      <div class="live-stat-card">
-        <i class="fas fa-users" style="color:var(--pink)"></i>
-        <div class="big-num" id="ls-users">—</div>
-        <div class="big-lbl">Users Reached</div>
-      </div>
-      <div class="live-stat-card">
-        <i class="fas fa-bolt" style="color:var(--green)"></i>
-        <div class="big-num" id="ls-ping">—</div>
-        <div class="big-lbl">API Latency (ms)</div>
-      </div>
-      <div class="live-stat-card">
-        <i class="fas fa-circle-check" style="color:var(--green)"></i>
-        <div class="big-num" id="ls-status">—</div>
-        <div class="big-lbl">Bot Status</div>
-      </div>
+  <div class="ls">
+    <div class="sh" style="margin-bottom:0"><h2>Live <span class="grad">Stats</span></h2><p>Real-time data from the Discord API.</p></div>
+    <div class="lg">
+      <div class="lc"><i class="fas fa-server" style="color:var(--accent)"></i><div class="bn" id="ls-g">—</div><div class="bl">Servers</div></div>
+      <div class="lc"><i class="fas fa-users" style="color:var(--pink)"></i><div class="bn" id="ls-u">—</div><div class="bl">Users Reached</div></div>
+      <div class="lc"><i class="fas fa-bolt" style="color:var(--green)"></i><div class="bn" id="ls-p">—</div><div class="bl">API Latency (ms)</div></div>
+      <div class="lc"><i class="fas fa-circle-check" style="color:var(--green)"></i><div class="bn" id="ls-s">—</div><div class="bl">Bot Status</div></div>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
 <footer>
-  <div class="footer-logo">
-    <img src="assets/images/kick-logo.gif" alt="KICK">
-    <span>KICK Bot</span>
+  <div class="fl"><img src="assets/images/kick-logo.gif" alt="KICK"><span>KICK Bot</span></div>
+  <div class="flinks">
+    <a href="#" id="f-inv"><i class="fab fa-discord"></i> Invite Bot</a>
+    <a href="#" id="f-sup">Support Server</a>
+    <a href="#" id="f-gh"><i class="fab fa-github"></i> GitHub</a>
+    <a href="#features">Features</a><a href="#commands">Commands</a>
   </div>
-  <div class="footer-links">
-    <a href="#" id="foot-invite"><i class="fab fa-discord"></i> Invite Bot</a>
-    <a href="#" id="foot-support">Support Server</a>
-    <a href="#" id="foot-github"><i class="fab fa-github"></i> GitHub</a>
-    <a href="#features">Features</a>
-    <a href="#commands">Commands</a>
-  </div>
-  <div class="footer-copy">© 2025 KICK Bot. All rights reserved.</div>
+  <div class="fc2">© 2025 KICK Bot. All rights reserved.</div>
 </footer>
 
-<!-- Toast -->
 <div class="toast" id="toast"><i class="fas fa-check-circle" style="color:var(--green)"></i> Copied!</div>
 
 <script>
-const CFG = window.CONFIG || {};
-const INVITE  = CFG.botInviteUrl  || 'https://discord.com/oauth2/authorize?client_id=1500171622982619177&permissions=8&integration_type=0&scope=bot+applications.commands';
-const SUPPORT = CFG.supportServerUrl || 'https://discord.gg/G352ZEwrF';
-const GITHUB  = CFG.githubUrl || 'https://github.com/timelesshubkerala-blip/KICK_BOT_WEB';
-const STATS   = CFG.statsApiUrl || '/api/bot-stats';
-
-// Commands data
-const CMDS = {
-  fun:      ['/8ball','/animu','/anime','/avatar','/banner','/birthday','/blackjack','/chess','/connectfour','/battleship','/2048','/slots','/countingstart','/dice','/imagegen','/meme','/qr','/steal','/translate'],
-  mod:      ['/ban','/unban','/kick','/mute','/unmute','/warn','/purge','/lock','/unlock','/slowmode','/jail','/unjail','/clearnick','/deafen','/move','/timeout'],
-  antinuke: ['/antinuke enable','/antinuke disable','/antinuke config','/authorise add','/authorise remove','/bypass add','/bypass remove','/whitelist add','/whitelist remove','/antinuke status'],
-  ai:       ['/ai ask','/ai analyze','/ai code','/ai explain','/ai fact','/ai summarize','/ai roleplay enable','/ai roleplay disable','/ai mood','/ai personality','/chatbot setup','/imagine'],
-  music:    ['/play','/pause','/resume','/skip','/stop','/queue','/nowplaying','/volume','/loop','/shuffle','/autoplay','/lyrics','/seek','/remove'],
-  utility:  ['/afk','/userinfo','/serverinfo','/channelinfo','/avatar','/banner','/help','/ping','/invite','/calculator','/base64','/base32','/encryption','/boostcount','/bots'],
-  setup:    ['/autorole setup','/autoresponder','/autoreact','/welcome setup','/farewell setup','/leveling setup','/ticket setup','/reactionrole','/stickymessage','/nightmode','/logging setup','/giveaway','/joindm','/verification']
+const C=window.CONFIG||{};
+const INV=C.botInviteUrl||'https://discord.com/oauth2/authorize?client_id=1500864536780210257&permissions=8&integration_type=0&scope=bot+applications.commands';
+const SUP=C.supportServerUrl||'https://discord.gg/G352ZEwrF';
+const GH=C.githubUrl||'https://github.com/timelesshubkerala-blip/KICK_BOT_WEB';
+const API=window.location.origin+'/api/bot-stats';
+const CMDS={
+  fun:['/8ball','/animu','/anime','/avatar','/banner','/birthday','/blackjack','/chess','/connectfour','/battleship','/2048','/slots','/dice','/imagine','/qr','/steal','/translate'],
+  mod:['/ban','/unban','/kick','/mute','/unmute','/warn','/purge','/lock','/unlock','/slowmode','/jail','/unjail','/clearnick','/deafen','/move','/timeout'],
+  an:['/antinuke enable','/antinuke disable','/antinuke config','/authorise add','/authorise remove','/bypass add','/bypass remove','/whitelist add','/whitelist remove','/antinuke status'],
+  ai:['/ai ask','/ai analyze','/ai code','/ai explain','/ai fact','/ai summarize','/ai roleplay enable','/ai roleplay disable','/ai mood','/ai personality','/chatbot setup','/imagine'],
+  mu:['/play','/pause','/resume','/skip','/stop','/queue','/nowplaying','/volume','/loop','/shuffle','/autoplay','/lyrics','/seek','/remove'],
+  ut:['/afk','/userinfo','/serverinfo','/channelinfo','/avatar','/banner','/help','/ping','/invite','/calculator','/base64','/base32','/encryption','/boostcount','/bots'],
+  se:['/autorole setup','/autoresponder','/autoreact','/welcome setup','/farewell setup','/leveling setup','/ticket setup','/reactionrole','/stickymessage','/nightmode','/logging setup','/giveaway','/joindm','/verification']
 };
-
 function fmt(n){if(!n&&n!==0)return'—';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(1)+'K';return String(n)}
-
-function copy(text){
-  navigator.clipboard.writeText(text).catch(()=>{});
-  const t=document.getElementById('toast');
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
-}
-
-function switchTab(name,btn){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
-}
-
-function renderCmds(){
-  for(const[cat,list] of Object.entries(CMDS)){
-    const el=document.getElementById('tab-'+cat);
-    if(!el)continue;
-    el.innerHTML=list.map(c=>`<div class="cmd-chip" onclick="copy('${c}')"><span>${c}</span><i class="fas fa-copy"></i></div>`).join('');
-  }
-}
-
-// Stats fetching
+function copy(t){navigator.clipboard.writeText(t).catch(()=>{});const e=document.getElementById('toast');e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2000)}
+function sw(n,b){document.querySelectorAll('.tb').forEach(x=>x.classList.remove('act'));document.querySelectorAll('.tc').forEach(x=>x.classList.remove('act'));b.classList.add('act');document.getElementById('tc-'+n).classList.add('act')}
+function renderCmds(){for(const[k,v] of Object.entries(CMDS)){const el=document.getElementById('tc-'+k);if(el)el.innerHTML=v.map(c=>`<div class="cc" onclick="copy('${c}')"><span>${c}</span><i class="fas fa-copy"></i></div>`).join('')}}
 async function fetchStats(){
-  const navDot=document.getElementById('nav-dot');
-  const barDot=document.getElementById('bar-dot');
-  const stText=document.getElementById('stats-status-text');
-  const pingEl=document.getElementById('stats-ping');
-  const guildsEl=document.getElementById('stats-guilds');
-  const usersEl=document.getElementById('stats-users');
-  const pillGuilds=document.getElementById('pill-guilds');
-  const pillUsers=document.getElementById('pill-users');
-  const updEl=document.getElementById('stat-updated');
-  const lsGuilds=document.getElementById('ls-guilds');
-  const lsUsers=document.getElementById('ls-users');
-  const lsPing=document.getElementById('ls-ping');
-  const lsStatus=document.getElementById('ls-status');
-  const hGuilds=document.getElementById('h-guilds');
-  const hUsers=document.getElementById('h-users');
+  const nd=document.getElementById('ndot'),bd=document.getElementById('bdot'),ss=document.getElementById('sst'),sp=document.getElementById('sping');
+  const pg=document.getElementById('pg'),pu=document.getElementById('pu'),sg=document.getElementById('sguilds'),su=document.getElementById('susers');
+  const lsg=document.getElementById('ls-g'),lsu=document.getElementById('ls-u'),lsp=document.getElementById('ls-p'),lss=document.getElementById('ls-s');
+  const hg=document.getElementById('h-g'),hu=document.getElementById('h-u'),upd=document.getElementById('upd');
   try{
-    const r=await fetch(STATS);
-    const d=await r.json();
+    const d=await fetch(API).then(r=>r.json());
     if(d.online){
-      [navDot,barDot].forEach(x=>{x.className='status-dot online'});
-      stText.textContent='Online';stText.className='online';
-      pingEl.textContent=d.latency;
-      lsPing.textContent=d.latency;
-      lsStatus.textContent='Online';
-      if(d.guildCount!=null){
-        const v=fmt(d.guildCount);
-        guildsEl.textContent=v;lsGuilds.textContent=v;hGuilds.textContent=v;
-        pillGuilds.style.display='flex';
-      }
-      if(d.approximateUserCount!=null){
-        const v=fmt(d.approximateUserCount);
-        usersEl.textContent=v;lsUsers.textContent=v;hUsers.textContent=v;
-        pillUsers.style.display='flex';
-      }
-    } else {
-      [navDot,barDot].forEach(x=>{x.className='status-dot offline'});
-      stText.textContent='Offline';stText.className='offline';
-      lsStatus.textContent='Offline';
+      [nd,bd].forEach(x=>{x.className='sdot on'});ss.textContent='Online';ss.className='on';
+      sp.textContent=d.latency;lsp.textContent=d.latency;lss.textContent='Online';
+      if(d.guildCount!=null){const v=fmt(d.guildCount);sg.textContent=v;lsg.textContent=v;hg.textContent=v;pg.style.display='flex'}
+      if(d.approximateUserCount!=null){const v=fmt(d.approximateUserCount);su.textContent=v;lsu.textContent=v;hu.textContent=v;pu.style.display='flex'}
+    }else{
+      [nd,bd].forEach(x=>{x.className='sdot off'});ss.textContent='Offline';ss.className='off';lss.textContent='Offline';
     }
-    updEl.textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  }catch(e){
-    [document.getElementById('nav-dot'),document.getElementById('bar-dot')].forEach(x=>{if(x)x.className='status-dot offline'});
-    const st=document.getElementById('stats-status-text');
-    if(st){st.textContent='Offline';st.className='offline';}
-  }
+    upd.textContent='Updated '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  }catch(e){[nd,bd].forEach(x=>{x.className='sdot off'});ss.textContent='Offline';ss.className='off';}
 }
-
-// Links
 document.addEventListener('DOMContentLoaded',()=>{
-  setTimeout(()=>{const l=document.getElementById('loader');if(l)l.classList.add('hide');},2000);
-  document.querySelectorAll('#invite-btn,#hero-invite,#foot-invite').forEach(el=>el.href=INVITE);
-  document.querySelectorAll('#hero-support,#foot-support').forEach(el=>el.href=SUPPORT);
-  document.querySelectorAll('#gh-btn,#foot-github').forEach(el=>el.href=GITHUB);
-  renderCmds();
-  fetchStats();
-  setInterval(fetchStats,30000);
+  setTimeout(()=>document.getElementById('loader').classList.add('hide'),2000);
+  document.querySelectorAll('#inv-btn,#h-inv,#f-inv').forEach(e=>e.href=INV);
+  document.querySelectorAll('#h-sup,#f-sup').forEach(e=>e.href=SUP);
+  document.querySelectorAll('#gh-btn,#f-gh').forEach(e=>e.href=GH);
+  renderCmds();fetchStats();setInterval(fetchStats,30000);
 });
 </script>
 </body>
